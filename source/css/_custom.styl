@@ -1,0 +1,38 @@
+// 1. 覆盖全局核心变量 (MD3 樱花粉系)
+:root
+  --site-bg = linear-gradient(145deg, #ffd9e2 0%, #f3e5f5 50%, #e3f2fd 100%)
+  --block = rgba(255, 255, 255, 0.5)        // 卡片半透明
+  --block-border = rgba(255, 182, 193, 0.2) // 浅粉色边框
+
+// 2. 背景强制应用
+#safearea, .l_body
+  background: var(--site-bg) !important
+  background-attachment: fixed !important
+
+// 3. 左边栏 (Side Menu) 深度定制
+.l_side
+  .menu
+    background: rgba(255, 235, 240, 0.6) !important // 樱花粉底色
+    backdrop-filter: blur(12px)
+    border-radius: 12px
+    margin: 8px 0
+    // 侧边栏导航文字颜色微调
+    a
+      color: hsl(340, 30%, 30%)
+      &.active
+        background: var(--theme) !important
+        color: #fff !important
+
+// 4. 工具栏 (Header) 深度定制
+.l_header
+  background: rgba(255, 255, 255, 0.7) !important
+  backdrop-filter: blur(20px)
+  border-bottom: 1px solid var(--block-border)
+  .container
+    background: transparent !important // 移除容器内部实色
+
+// 5. 文章卡片及挂件透明化 (MD3 玻璃拟态)
+.post-wrapper, .widget
+  background: var(--block) !important
+  backdrop-filter: blur(10px)
+  border: 1px solid var(--block-border)

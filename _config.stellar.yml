@@ -44,26 +44,26 @@ menubar:
     # icon: 支持 svg/img 标签，可以定义在 icons.yml 文件中，也支持外部图片的 URL
     # title: 标题
     # url: 点击跳转到哪，支持相对路径和绝对路径
-    # - id: post
-    #   theme: '#1BCDFC'
-    #   icon: solar:documents-bold-duotone
-    #   title: 博客
-    #   url: /
-    # - id: wiki
-    #   theme: '#3DC550'
-    #   icon: solar:notebook-bookmark-bold-duotone
-    #   title: 文档
-    #   url: /wiki/
-    # - id: explore
-    #   theme: '#FA6400'
-    #   icon: solar:planet-bold-duotone
-    #   title: 探索
-    #   url: /explore/
-    # - id: social
-    #   theme: '#F44336'
-    #   icon: solar:chat-square-like-bold-duotone
-    #   title: 社交
-    #   url: /friends/
+     - id: post
+       theme: '#1BCDFC'
+       icon: solar:documents-bold-duotone
+       title: 博客
+       url: /
+     - id: wiki
+       theme: '#3DC550'
+       icon: solar:notebook-bookmark-bold-duotone
+       title: 文档
+       url: /wiki/
+     - id: explore
+       theme: '#FA6400'
+       icon: solar:planet-bold-duotone
+       title: 探索
+       url: /explore/
+     - id: social
+       theme: '#F44336'
+       icon: solar:chat-square-like-bold-duotone
+       title: 社交
+       url: /friends/
 
 
 ######## Main ########
@@ -609,7 +609,7 @@ plugins:
   # ```
   mermaid:
     enable: # true # 可以在特定文章的 front-matter 中设置 mermaid: true 来开启，也可以在这里设置全局开启
-    style_optimization: false # use custom style in stellar
+    style_optimization: true # use custom style in stellar
     # js: https://unpkg.com/mermaid@9.0.0/dist/mermaid.min.js
     js: https://gcore.jsdelivr.net/npm/mermaid@v9/dist/mermaid.min.js
     # Available themes: default | dark | forest | neutral
@@ -656,9 +656,11 @@ style:
     image-s: 8px # 评论区图片圆角（部分评论支持）
   color:
     # 主题色配置（不会根据明暗动态调整，请设置为通用的颜色）
-    theme: 'hsl(192 98% 55%)' # 主题色
-    accent: 'hsl(14 100% 57%)' # 强调色
-    link: 'hsl(207 90% 54%)' # 超链接颜色
+    # 樱花粉 MD3 方案
+    theme: 'hsl(340 82% 82%)'   # 柔和的樱花粉，用于大面积点缀和品牌印象
+    accent: 'hsl(295 45% 75%)'  # 浅紫色系的强调色，增加层次感（MD3 常用互补策略）
+    link: 'hsl(340 70% 65%)'    # 稍微加深一点的粉色，确保文字链接的可读性
+    custom_css: 'css/_custom.styl'
   animated_avatar:
     animate: auto # auto, always
     background: https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp
@@ -694,6 +696,7 @@ style:
     h5: ':'
 
 
+
 default:
   avatar: https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg
   link: https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg
@@ -713,7 +716,64 @@ api_host:
   # https://github.com/anuraghazra/github-readme-stats
   ghcard: github-readme-stats.vercel.app
 
+inject:
+  head:
+    - |
+      <style>
+        /* 1. 全局 MD3 樱花粉色调变量（加深版） */
+        :root {
+          /* 渐变色：从浓郁樱花粉到柔和薰衣草紫 */
+          --site-bg: linear-gradient(150deg, #ffc1cc 0%, #fce4ec 50%, #f3e5f5 100%) !important;
+          /* 侧边栏/卡片背景：半透明粉白 */
+          --sakura-glass: rgba(255, 255, 255, 0.5) !important;
+          --sakura-border: rgba(255, 120, 150, 0.2) !important;
+        }
 
+        /* 2. 背景强制击穿：处理所有底层容器 */
+        html, body, #safearea, .l_body {
+          background: var(--site-bg) !important;
+          background-image: var(--site-bg) !important;
+          background-attachment: fixed !important;
+        }
+        .l_body { background-color: transparent !important; }
+
+        /* 3. 左侧边栏 (Side Menu) 专项染色 */
+        .l_side, .l_side .menu, .l_side .widgets {
+          background: transparent !important; /* 移除外层遮挡 */
+        }
+        .l_side .menu {
+          background: var(--sakura-glass) !important;
+          backdrop-filter: blur(15px) saturate(160%) !important;
+          border: 1px solid var(--sakura-border) !important;
+          border-radius: 16px !important;
+          padding: 10px !important;
+          margin: 10px 0 !important;
+        }
+
+        /* 4. 顶部工具栏 (Header) 专项染色 */
+        .l_header, #l_header, .l_header .container {
+          background: rgba(255, 255, 255, 0.7) !important;
+          backdrop-filter: blur(20px) !important;
+          border-bottom: 1px solid var(--sakura-border) !important;
+        }
+
+        /* 5. 侧边栏及卡片文字对比度优化 */
+        .l_side .menu a, .l_main .post-list .post-wrapper {
+          color: #5d4037 !important; /* 深棕粉色文字，更具 MD3 质感 */
+        }
+        .l_side .menu a.active {
+          background: #ff80ab !important; /* 激活态设为亮粉色 */
+          color: white !important;
+        }
+
+        /* 6. 内容卡片透明度优化 */
+        .post-wrapper, .widget {
+          background: var(--sakura-glass) !important;
+          backdrop-filter: blur(10px) !important;
+          border: 1px solid var(--sakura-border) !important;
+          border-radius: 12px !important;
+        }
+      </style>
 
 # 非资深hexo开发者尽量不要动这块
 system:
