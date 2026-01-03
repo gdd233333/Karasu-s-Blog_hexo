@@ -4,9 +4,9 @@
 
 # Site
 title: Bird's Nest
+avatar: /images/ProfilePicture.jpg
 subtitle: 'Karasu的鸟巢'
-description: '或许，这就是我追求的?'
-keywords: IDK
+description: '我在这里表达自己|或许，这就是我追求的?'
 author: karasu
 language: zh-CN
 timezone: 'Asia/Shanghai'
@@ -96,7 +96,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: Materialis
+theme: stellar
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
